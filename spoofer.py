@@ -13,7 +13,7 @@
 
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import re, os, sys, time, smtplib, configparser
+import re, os, sys, time, socket, smtplib, configparser
 
 
 global message
@@ -39,7 +39,7 @@ succe=f"{blue}[{stop}√{blue}]{purple}"
 
 def internet():
     try:
-        s = socket(AF_NET, SOCK_STREAM)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect_ex(("www.google.com",80))
         return True
     except Exception:return False
@@ -75,10 +75,10 @@ def detectLink(msg):
             try:
                 if not re.match(r"^(http|www.|ftp:)+$",wordArr[1][:6-2]):
                     wordArr[1] = wordArr[1].replace("-"," ")  # Insert whitespace while masking URL to form an hypertext
-                link = f"""<a href="{wordArr[0]}">{wordArr[1]}</a>"""
+                link = f'<a href="{wordArr[0]}">{wordArr[1]}</a>'
 
             except IndexError:
-                link = f"""<a href="{wordArr[0]}">{wordArr[0]}</a>"""
+                link = f'<a href="{wordArr[0]}">{wordArr[0]}</a>'
             msg = msg.replace(word,link)
             
     return str(msg)
@@ -173,7 +173,7 @@ escape = " \r\n "   # useful in line 66, the surrounding whitespace help in spli
                     # and arranging links perfectly
 
 try:
-    if internet():
+    if not internet():
         print(f"\n{err} Please Check Your Internet Connection{stop}")
         os.sys.exit()
 
